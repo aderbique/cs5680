@@ -15,12 +15,16 @@ pause;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2
 B = rgb2gray(A);
+imwrite(B,'output_images/B_image.jpg');
 TB = permute(B,[2 1 3]);
+imwrite(TB,'output_images/TB_image.jpg');
 
 n=fix(size(B,1)/2);
 HB = cat(1,B(n+1:end,:,:),B(1:n,:,:));
+imwrite(HB,'output_images/TB_image.jpg');
 
 FB = flip(B,2);
+imwrite(FB,'output_images/FB_image.jpg');
 
 figure;
 
@@ -74,17 +78,18 @@ pause;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 4
 C = im2double(B);
+imwrite(C,'output_images/C_image.jpg');
 figure;
 imshow(C);
 title('Normalized Grayscale Image');
 
 n=fix(size(C,1)/4);
-disp("The size of n is: " + n);
 D = cat(2,cat(2,C(:,1:n,:).^1.25,C(:,n+1:2*n,:)),cat(2,C(:,2*n + 1:3*n,:),C(:,3*n + 1: 4*n,:).^.75));
 figure;
 imshow(D);
 title("Processed Grayscale Image");
 imwrite(D,'Austin_D.jpg');
+imwrite(D,'output_images/D_image.jpg');
 
 disp('-----Finish Solving Problem 4-----');
 disp('Press any key to continue');
@@ -98,6 +103,9 @@ bw1(bw1>.3)=1;
 
 bw2 = C > .3;
 bw3 = imbinarize(C,0.3);
+
+imwrite(bw1,'output_images/bw1_image.jpg');
+imwrite(bw2,'output_images/bw2_image.jpg');
 
 if isequal(bw1,bw3) && isequal(bw2,bw3)
     disp("Both of my methods worked");
@@ -132,6 +140,8 @@ pause;
 
 BA = BlurColorIm(A);
 BB = BlurGrayIm(B);
+imwrite(BA,'output_images/BA_image.jpg');
+imwrite(BB,'output_images/BB_image.jpg');
 
 figure;
 subplot(2,2,1);
