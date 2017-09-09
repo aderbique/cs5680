@@ -81,6 +81,7 @@ title('Normalized Grayscale Image');
 n=fix(size(C,1)/4);
 disp("The size of n is: " + n);
 D = cat(2,cat(2,C(:,1:n,:).^1.25,C(:,n+1:2*n,:)),cat(2,C(:,2*n + 1:3*n,:),C(:,3*n + 1: 4*n,:).^.75));
+figure;
 imshow(D);
 title("Processed Grayscale Image");
 imwrite(D,'Austin_D.jpg');
@@ -164,35 +165,45 @@ end
 
 function [blurredIm] = BlurColorIm(oriIm)
 I = oriIm;
-[row,col] = size(oriIm);
+[row,col] = size(I);
 row = row/2;
 col = col/4;
 
-blurredIm = zeros(row,col,3);
-for i = 0:row-1
-    for j = 0:col-1
+%blurredIm = zeros(row/2,col/4,uint8(3));
+blurredIm = zeros(256,128,3);
+
+for i = 0:255
+    for j = 0:127
         tolR = 0;
         tolG = 0;
         tolB = 0;
         for x = 1:2
             for y = 1:4
-                
+                %disp(i + j + x + y)
                 %pixelRGB = squeeze(I(uint8(i+x),uint8(j+y),:))
-                disp(I(444,444))
-                red = I(i+x,j+y,1)
-                grn = I(i+x,j+y,2)
-                blu = I(uint8(i+x),uint8(j+y),3)
+                %disp(I(444,444))
+                %red = I(i+x,j+y,1)
+                %grn = I(i+x,j+y,2)
+                %blu = I(uint8(i+x),uint8(j+y),3)
                 %disp("The red value is: " + I(5,5,1))
-                %tolR = tolR + int8(I(uint16(i+x),uint16(j+y),1));
-                %tolG = tolG + int8(I(uint16(i+x),uint16(j+y),2));
-                %tolB = tolB + int8(I(i + x, j + y,3));
+                if i == row-1
+                    break;
+                elseif j == col-1
+                    break;
+                end
+                tolR = tolR + int32(I(2*i+x,4*j+y,1));
+                tolG = tolG + int32(I(2*i+x,4*j+y,2));
+                tolB = tolB + int32(I(2*i+x,4*j+y,3));
             end
         end
-        blurredIm(i,j,1) = tolR / 8;
-        blurredIm(i,j,2) = tolG / 8;
-        blurredIm(i,j,3) = tolB / 8;
+        blurredIm(i+1,j+1,1) = int32(tolR / 8);
+        blurredIm(i+1,j+1,2) = int32(tolG / 8);
+        blurredIm(i+1,j+1,3) = int32(tolB / 8);
     end
 end
+blurredIm = uint8(blurredIm);
+blurredIm = imresize(blurredIm,[512 512]);
+
 end
 
 function [p_maxValue, p_minValue, p_meanValue, p_medianValue] = FindInfo(B)
@@ -201,6 +212,7 @@ p_minValue = 255;
 
 
 intensityTotal = 0;
+
 
 [row,col] = size(B);
 %medianArray = 1:row*col;
