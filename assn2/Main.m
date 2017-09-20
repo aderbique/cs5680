@@ -5,3 +5,13 @@
 
 
 %%%%%%%%% Problem 1 %%%%%%%%%
+
+A = imread('Food.jpg');
+imshow(A);
+
+[scaledIm, transFunc] = Scaling(A,0:255);
+
+imshow(scaledIm);
+disp('-----Finish Solving Problem 1-----');
+disp('Press any key to continue');
+pause;
