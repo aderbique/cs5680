@@ -1,4 +1,4 @@
-function [ s, varargout ] = CalHist(inputImage)
+function [ normHist, hist ] = CalHist(inputImage)
 %CALHIST Summary of this function goes here
 %   Detailed explanation goes here
     A = inputImage;
@@ -18,12 +18,13 @@ function [ s, varargout ] = CalHist(inputImage)
     end 
 
     hist = [keys(dict);values(dict)];
+    hist = cell2mat(hist);
+    
+    normHist = [keys(dict);values(dict)];
+    normHist = cell2mat(normHist);
+    normHist = double(normHist);
+    normHist(2,:) = normHist(2,:)./double(rows*cols);
+    
 
-    nout = max(nargout,1) - 1;
-    s = size(inputImage);
-
-    for k = 1:nout
-        varargout{k} = s(k);
-    end
 end
 

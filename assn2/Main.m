@@ -26,7 +26,7 @@ pause;
 disp("%%%%%%%%% Problem 2 %%%%%%%%%");
 
 
-matScaledFood = imadjust(A,[.35,.54],[0,1]);
+matScaledFood = imadjust(Food,[.35,.54],[0,1]);
 figure;
 
 subplot(2,2,1);
@@ -46,17 +46,28 @@ disp('Press any key to continue');
 pause;
 disp("%%%%%%%%% Problem 3 %%%%%%%%%");
 
-[hist, normHist] = CalHist(scaledFood);
+[normHist, hist] = CalHist(scaledFood);
 matNormHist = CalHist(matScaledFood);
 
 
 
-
+figure;
 subplot(2,2,1);
-bar(normHist_X,normHist_Y);
+bar(normHist(1,:),normHist(2,:));
 title('Normalized Histogram');
+xlabel('Pixel Intensity)');
+ylabel('Normalized Value');
+xlim([0 255])
 
 subplot(2,2,2);
-bar(matNormHist_X,matNormHist_Y);
+bar(matNormHist(1,:),matNormHist(2,:));
 title('Matlab Normalized Histogram');
+xlabel('Pixel Intensity');
+ylabel('Normalized Value');
+xlim([0 255])
+
+disp('-----Finish Solving Problem 3-----');
+disp('Press any key to continue');
+pause;
+disp("%%%%%%%%% Problem 4 %%%%%%%%%");
 
