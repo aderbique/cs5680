@@ -14,7 +14,7 @@ maxInput = max(max(A));
 n = maxInput - minInput + 1;
 
 B = A - minInput;
-C = uint8((B * double((double(maxOutput) / double((maxInput - minInput))))));
+C = uint8((B * double((double(maxOutput) / double((maxInput - minInput)))))+ minOutput);
 A_map = zeros(1,1,'uint8');
 C_map = zeros(1,1,'uint8');
 
