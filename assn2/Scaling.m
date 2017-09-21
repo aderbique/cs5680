@@ -1,7 +1,6 @@
 function [scaledIm, transFunc] = Scaling(inputIm, range)
 %SCALING Summary of this function goes here
 %   Detailed explanation goes here
-
 A = inputIm;
 
 minOutput = (min(range));
@@ -15,27 +14,33 @@ maxInput = max(max(A));
 n = maxInput - minInput + 1;
 
 B = A - minInput;
-C = B * (maxOutput / (maxInput - minInput));
-
-A_map = [];
-C_map = [];
+C = uint8((B * double((double(maxOutput) / double((maxInput - minInput))))));
+A_map = zeros(1,1,'uint8');
+C_map = zeros(1,1,'uint8');
 
 [rows,cols] = size(A);
+%disp("There are " + rows + " rows and " + cols + "cols");
+countA = 1;
+countC = 1;
 for col = 1:cols
     for row = 1:rows
-        if ~ismember(A(rows,cols),A_map)
-            A_map(end+1) = A(rows,cols);
+        if ~ismember(A(row,col),A_map)
+            A_map(countA) = A(row,col);
+            countA = countA + 1;
+            %disp(A(row,col));
         end
-        if ~ismember(C(rows,cols),C_map)
-            C_map(end+1) = C(rows,cols);
+        if ~ismember(C(row,col),C_map)
+            C_map(countC) = C(row,col);
+            countC = countC + 1;
         end
     end
-end  
+end 
+%disp("size of A_map is: " + size(A_map) + ". Size of C_Map is: " + size(C_map));
+A_map = sort(A_map);
+C_map = sort(C_map);
 
-A_map = sorted(A_map);
-C_map = sorted(C_map);
-return A_map, C_map;
-
+scaledIm = C;
+transFunc = [A_map;C_map];
 
 end
 
