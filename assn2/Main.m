@@ -46,4 +46,17 @@ disp('Press any key to continue');
 pause;
 disp("%%%%%%%%% Problem 3 %%%%%%%%%");
 
+[hist, normHist] = CalHist(scaledFood);
+matNormHist = CalHist(matScaledFood);
+
+
+
+
+subplot(2,2,1);
+bar(normHist_X,normHist_Y);
+title('Normalized Histogram');
+
+subplot(2,2,2);
+bar(matNormHist_X,matNormHist_Y);
+title('Matlab Normalized Histogram');
 
