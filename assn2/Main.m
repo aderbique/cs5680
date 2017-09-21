@@ -4,18 +4,13 @@
 %9/20/17
 
 
-%%%%%%%%% Problem 1 %%%%%%%%%
+disp("%%%%%%%%% Problem 1 %%%%%%%%%");
 
-A = imread('Food.jpg');
-figure;
-imshow(A);
+Food = imread('Food.jpg');
 
-[scaledIm, transFunc] = Scaling(A,0:240);
+[scaledFood, transFunc] = Scaling(Food,0:240);
 %Intentionally scaling to 240 because assignment says to scale so image has
 %a "good quality"
-
-figure;
-imshow(scaledIm);
 
 X = transFunc(1,:);
 Y = transFunc(2,:);
@@ -28,6 +23,27 @@ ylabel('Transformed Image (intensity of pixels)');
 disp('-----Finish Solving Problem 1-----');
 disp('Press any key to continue');
 pause;
-close all;
+disp("%%%%%%%%% Problem 2 %%%%%%%%%");
 
-%%%%%%%%% Problem 2 %%%%%%%%%
+
+matScaledFood = imadjust(A,[.35,.54],[0,1]);
+figure;
+
+subplot(2,2,1);
+imshow(Food);
+title('Original Food');
+
+subplot(2,2,2);
+imshow(scaledFood);
+title('Scaled Food');
+
+subplot(2,2,3);
+imshow(matScaledFood);
+title('Matlab Scaled Food');
+
+disp('-----Finish Solving Problem 2-----');
+disp('Press any key to continue');
+pause;
+disp("%%%%%%%%% Problem 3 %%%%%%%%%");
+
+
