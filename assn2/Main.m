@@ -71,3 +71,45 @@ disp('Press any key to continue');
 pause;
 disp("%%%%%%%%% Problem 4 %%%%%%%%%");
 
+t = cputime;
+[equalizedFood, equalTransFunc] = HistEqualization(Food);
+eqaulizedTime = cputime - t;
+disp("The running time used to perform HistEqualization(Food) is: " + equalizedTime + " seconds.");
+
+disp('-----Finish Solving Problem 4-----');
+disp('Press any key to continue');
+pause;
+
+
+disp("%%%%%%%%% Problem 5 %%%%%%%%%");
+
+t = cputime;
+[matEqualizedFood,matEqualizedTransFunc] = histeq(Food);
+matEqualizedTime = cputime - t;
+disp("The running time used to perform histeq(Food) is: " + matEqualizedTime + " seconds.");
+disp("The matlab equalization function took " + (equalizedTime - matEqualizedTime) + " fewer seconds.");
+
+figure;
+subplot(2,2,1);
+imshow(equalizedFood);
+title('Equalized Food');
+
+subplot(2,2,2);
+imshow(matNormHist(1,:),matNormHist(2,:));
+title('Matlab Equalized Food');
+
+
+figure;
+subplot(2,2,1);
+bar(normHist(1,:),normHist(2,:));
+title('histogram equalization transform function');
+xlabel('Pixel Intensity)');
+ylabel('Normalized Value');
+xlim([0 255])
+
+subplot(2,2,2);
+bar(matNormHist(1,:),matNormHist(2,:));
+title('Matlab histogram equalization transform function');
+xlabel('Pixel Intensity');
+ylabel('Normalized Value');
+xlim([0 255])
