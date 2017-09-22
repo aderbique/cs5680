@@ -49,8 +49,6 @@ disp("%%%%%%%%% Problem 3 %%%%%%%%%");
 [normHist, hist] = CalHist(scaledFood);
 matNormHist = CalHist(matScaledFood);
 
-
-
 figure;
 subplot(2,2,1);
 bar(normHist(1,:),normHist(2,:));
@@ -73,7 +71,7 @@ disp("%%%%%%%%% Problem 4 %%%%%%%%%");
 
 t = cputime;
 [equalizedFood, equalTransFunc] = HistEqualization(Food);
-eqaulizedTime = cputime - t;
+equalizedTime = cputime - t;
 disp("The running time used to perform HistEqualization(Food) is: " + equalizedTime + " seconds.");
 
 disp('-----Finish Solving Problem 4-----');
@@ -95,21 +93,21 @@ imshow(equalizedFood);
 title('Equalized Food');
 
 subplot(2,2,2);
-imshow(matNormHist(1,:),matNormHist(2,:));
+imshow(matEqualizedFood);
 title('Matlab Equalized Food');
 
 
 figure;
 subplot(2,2,1);
-bar(normHist(1,:),normHist(2,:));
+plot(equalTransFunc(1,:),equalTransFunc(2,:));
 title('histogram equalization transform function');
 xlabel('Pixel Intensity)');
-ylabel('Normalized Value');
+ylabel('Equalized number of pixels');
 xlim([0 255])
 
 subplot(2,2,2);
-bar(matNormHist(1,:),matNormHist(2,:));
+plot(matEqualizedTransFunc(1,:),matEqualizedTransFunc(2,:));
 title('Matlab histogram equalization transform function');
 xlabel('Pixel Intensity');
-ylabel('Normalized Value');
+ylabel('Equalized number of pixels');
 xlim([0 255])
