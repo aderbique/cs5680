@@ -111,3 +111,9 @@ title('Matlab histogram equalization transform function');
 xlabel('Pixel Intensity');
 ylabel('Equalized number of pixels');
 xlim([0 255])
+
+disp("Comparison of the histogram equalization transform functions: I used the 4 step method described in the notes. Although the time performance is not great, the image quality is on par with the matlab implementation."); 
+disp('-----Finish Solving Problem 5-----');
+disp('Press any key to continue. This will close all figures and exit');
+pause;
+closeall;

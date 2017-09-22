@@ -33,9 +33,6 @@ function [enhancedIm, transFunc] = HistEqualization(inputIm)
            end
        end
    end
-  scaledFood
-  disp("Showing equalized food");
-  pause;
   enhancedIm = scaledFood;
   transFunc = cumNormHist;
    
