@@ -27,7 +27,7 @@ function [enhancedIm, transFunc] = HistEqualization(inputIm)
            for s=1:49
                if eq(scaledFood(j,k),cumNormHist(1,s))
                    scaledFood(j,k) = cumNormHist(2,s);
-                   disp("theres a match! Setting scaled food equal now");
+                   %disp("theres a match! Setting scaled food equal now");
                    break;
                end
            end
