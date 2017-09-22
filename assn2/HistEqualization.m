@@ -19,19 +19,23 @@ function [enhancedIm, transFunc] = HistEqualization(inputIm)
    
    cumNormHist = uint8(cumNormHist);
    
-   [rows,cols] = size(scaledFood);
+   
+   [rows,cols] = size(inputIm);
    
    for j =1:rows
        for k = 1:cols
            for s=1:49
-               if scaledFood(j,k) == normHist(1,s)
-                   scaledFood(j,k) = normHist(2,s);
+               if eq(scaledFood(j,k),cumNormHist(1,s))
+                   scaledFood(j,k) = cumNormHist(2,s);
+                   disp("theres a match! Setting scaled food equal now");
                    break;
                end
            end
        end
    end
-   
+  scaledFood
+  disp("Showing equalized food");
+  pause;
   enhancedIm = scaledFood;
   transFunc = cumNormHist;
    

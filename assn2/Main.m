@@ -106,7 +106,7 @@ ylabel('Equalized number of pixels');
 xlim([0 255])
 
 subplot(2,2,2);
-plot(matEqualizedTransFunc(1,:),matEqualizedTransFunc(2,:));
+plot(matEqualizedTransFunc);
 title('Matlab histogram equalization transform function');
 xlabel('Pixel Intensity');
 ylabel('Equalized number of pixels');
