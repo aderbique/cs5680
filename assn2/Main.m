@@ -116,4 +116,4 @@ disp("Comparison of the histogram equalization transform functions: I used the 4
 disp('-----Finish Solving Problem 5-----');
 disp('Press any key to continue. This will close all figures and exit');
 pause;
-closeall;
+close all;
