@@ -5,5 +5,11 @@
 
 disp("%%%%%%%%% Problem 1 %%%%%%%%%");
 Circuit = imread('Circuit.jpg');
-mask = {1,1,1;1,1,1;1,1,1};
+imshow(Circuit);
+figure;
+
+%mask = ones(3);
+mask = zeros(3);
 AvgFilter_Circuit = AverageFiltering(Circuit,mask);
+imshow(AvgFilter_Circuit);
+pause();
