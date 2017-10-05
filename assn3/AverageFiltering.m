@@ -22,20 +22,20 @@ end
 
 if isMask == "TRUE" %Mask is true, carry on with average filtering
    [r,c] = size(im);
-   padR = r + rmask -1;
+   padR = r + rmask -1 ;
    padC = c + cmask -1;   
    fx = floor(rmask/2);
    fy = floor(cmask/2);
    padIm = zeros(padR,padC);
-%    for p=1:size(im,1)
-%        for q=1:size(im,2)
-%            %padIm(fx+p,fy+q)=im(p,q);
-%            padIm(p,q)=im(p,q);
-%        end
-%    end
-    padIm(fx:r+fx,fy:fy+c) = im;
+   for p=1:size(im,1)
+       for q=1:size(im,2)
+           padIm(fx+p,fy+q)=im(p,q);
+           %padIm(p,q)=im(p,q);
+       end
+   end
+    %padIm(fx:r+fx,fy:fy+c) = im;
    
-   filteredIm = padIm;
+   filteredIm = uint8(padIm);
    
 end 
 
