@@ -22,18 +22,35 @@ end
 
 if isMask == "TRUE" %Mask is true, carry on with average filtering
    [r,c] = size(im);
-   padR = r + rmask -1;
+   padR = r + rmask -1 ;
    padC = c + cmask -1;   
-   fx = floor(padR/2)-floor(size(im,1)/2);
-   fy = floor(padC/2)-floor(size(im,2)/2);
+   fx = floor(rmask/2);
+   fy = floor(cmask/2);
    padIm = zeros(padR,padC);
    for p=1:size(im,1)
        for q=1:size(im,2)
            padIm(fx+p,fy+q)=im(p,q);
+           %padIm(p,q)=im(p,q);
+       end
+   end
+    %padIm(fx:r+fx,fy:fy+c) = im;
+   
+   padIm = uint8(padIm);
+   filteredIm = zeros(r,c);
+   maskSum = sum(sum(mask));
+   for n=1:r %x coord of pixel
+       for m=1:c %y coord of pixel
+           pixel_val = 0;
+           for q=1:rmask
+               for s=1:cmask
+                   disp("im index (" + n+q-1 + ","+ m+s-1 + "), mask(" + q + "," + s ").");
+                   pixel_val = pixel_val + mask(q,s) * im(n+q-1,m+s-1);
+               end
+           end
+           filteredIm(n,m) = uint8(pixel_val/maskSum);
        end
    end
    
-   filteredIm = padIm;
    
 end 
 
