@@ -1,0 +1,61 @@
+function [filteredIm] = AverageFiltering (im, mask)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+isMask = "FALSE";
+%Check to make sure mask is correct
+[rmask,cmask] = size(mask);
+if rmask == cmask
+    if mod(cmask,2) == 1
+        if isequal(sum(sum(mask)),0) || isequal(sum(sum(mask)),(rmask * cmask))
+            isMask = "TRUE";
+        else
+            disp("ERROR: Mask's weights do not add up correctly");
+        end
+    else
+        disp("ERROR: Mask's dimension is not an odd number");
+        
+    end
+else
+    disp("ERROR: Masks's dimension not square");
+end
+
+if isMask == "TRUE" %Mask is true, carry on with average filtering
+   [r,c] = size(im);
+   padR = r + rmask -1 ;
+   padC = c + cmask -1;   
+   fx = floor(rmask/2);
+   fy = floor(cmask/2);
+   padIm = zeros(padR,padC);
+   for p=1:size(im,1)
+       for q=1:size(im,2)
+           padIm(fx+p,fy+q)=im(p,q);
+           %padIm(p,q)=im(p,q);
+       end
+   end
+    %padIm(fx:r+fx,fy:fy+c) = im;
+   
+   padIm = uint8(padIm);
+   filteredIm = zeros(r,c);
+   maskSum = sum(sum(mask));
+   for n=1:r-rmask %x coord of pixel
+       for m=1:c-cmask %y coord of pixel
+           pixel_val = 0.0;
+           for q=1:rmask
+               for s=1:cmask
+                   %disp("im index (" + (n+q-1) + ","+ (m+s-1) + "), mask(" + q + "," + s + ").");
+                   pixel_val = double(pixel_val + double(mask(q,s)) * double(im(n+q,m+s)));
+               end
+           end
+           filteredIm(n,m) = uint8(pixel_val/maskSum);
+           %disp("total pixel value: " + pixel_val + ", mask sum: " + maskSum + ", value: " + pixel_val/maskSum);
+           filteredIm = uint8(filteredIm);
+           pixel_val = 0;
+       end
+   end
+   
+   
+end 
+
+end
+
