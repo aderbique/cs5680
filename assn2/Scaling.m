@@ -1,6 +1,12 @@
 function [scaledIm, transFunc] = Scaling(inputIm, range)
 %SCALING Summary of this function goes here
 %   Detailed explanation goes here
+
+%CS5680 Assignment 2
+%Austin Derbique
+%A01967241
+%9/20/17
+
 A = inputIm;
 
 minOutput = (min(range));

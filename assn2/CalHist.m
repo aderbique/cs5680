@@ -1,6 +1,12 @@
 function [ normHist, hist ] = CalHist(inputImage)
 %CALHIST Summary of this function goes here
 %   Detailed explanation goes here
+%CS5680 Assignment 2
+%Austin Derbique
+%A01967241
+%9/20/17
+
+
     A = inputImage;
     dict = containers.Map('KeyType', 'int32', 'ValueType', 'int32');
     
