@@ -90,9 +90,56 @@ title('Enhanced Image');
 disp('-----Finish Solving Problem 1.3-----');
 disp('Press any key to continue');
 pause;
-disp("%%%%%%%%% Problem 2.1 %%%%%%%%%");
+disp("%%%%%%%%% Problem 2 %%%%%%%%%");
+
+Rice = imread('Rice.jpg');
+[~, threshold] = edge(Rice, 'sobel');
+fudgeFactor = .5;
+Sobel_Rice = edge(Rice,'sobel', threshold * fudgeFactor);
+
+disp('Sobel edge detector on Rice: I chose a threshold determined by the edge function in matlab and telling it I wanted to use the sobel filter. I give an error limit of .5 to allow for small inconsistencies in the image. Later, I take the threshold given by the first edge function and call the edge function once more with the threshold multuplied by that fudgefactor. This strategy is used on the matlab website and that is why I know it is a good solution to sobel edge filtering.');
 
 
+Rice_Histogram = CalEdgeHist(Rice,18);
+
+figure;
+subplot(2,2,1);
+imshow(Rice);
+title('Orginal Rice');
+
+subplot(2,2,2);
+imshow(Sobel_Rice);
+title('Sobel Gradient of Rice');
+
+subplot(2,2,3);
+imshow(Rice_Histogram);
+title('18-bin Edge Histogram of Rice');
 
 
+disp('-----Finish Solving Problem 2.2-----');
+disp('Press any key to continue');
+pause;
+disp("%%%%%%%%% Problem 3 %%%%%%%%%");
 
+Text = imread('Text.gif');
+Text1 = imread('Text1.gif');
+Text2 = imread('Text2.jpg');
+
+fText = MedianFiltering(Text,ones(5));
+fText1 = Text1;
+fText2 = Text2;
+
+figure;
+subplot(2,2,1);
+imshow(Text);
+title('Text Original');
+
+subplot(2,2,2);
+imshow(fText);
+title('Filtered Text');
+
+
+disp('-----Finish Solving Problem 3----');
+disp('Press any key to close all figures');
+pause;
+close all;
