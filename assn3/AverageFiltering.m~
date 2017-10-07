@@ -6,8 +6,8 @@ isMask = "FALSE";
 %Check to make sure mask is correct
 [rmask,cmask] = size(mask);
 if rmask == cmask
-    if mod(cmask,2) == 1 || mod(cmask,2) == 0
-        if isequal(sum(sum(mask)),0) || isequal(sum(sum(mask)),uint8((uint8(rmask) * uint8(cmask)))) || 1==1
+    if mod(cmask,2) == 1
+        if isequal(sum(sum(mask)),0) || isequal(sum(sum(mask)),uint8((uint8(rmask) * uint8(cmask))))
             isMask = "TRUE";
         else
             disp("ERROR: Mask's weights do not add up correctly");

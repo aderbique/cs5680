@@ -30,21 +30,20 @@ filteredIm = zeros(row,col);
 for i = fx+1:row+fx-1
     for j = fy+1:col+fy-1
         pixelArray = zeros(rmask,cmask);
-        for n = i-fx:i+fx
-            for m = j-fy:j+fy
+        for n = i-fx:i+fx-1
+            for m = j-fy:j+fy-1
                 maskx = n-i+fx+1;
                 masky = m-j+fy+1;
-                %disp("The value for ("+i+","+j+"), pixelVal ("+n+","+m+").");
-                %disp("mask value is: ("+ (n-i+fx+1) +","+ (m-j+fy+1) +").");
-                %disp("pixelArray("+ maskx + "," + masky + ")");
-                pixelArray(maskx,masky) = double(mask(maskx,masky)) * double(padIm(n,m));
+                disp("The value for ("+i+","+j+"), pixelVal ("+n+","+m+").");
+                disp("mask value is: ("+ (n-i+fx+1) +","+ (m-j+fy+1) +").");
+                disp("Pixel
+                pixelArray(i-fx+1,j-fy+1) = double(mask(maskx,masky)) * double(im(n,m));
             end
         end
         List = pixelArray(:);
-        List = sort(List);
-        %disp("Median Value is: " + median(List) + ".");
-     
-        filteredIm(i-fx,j-fy) = uint8(median(List));
+        sort(List);
+        disp(List);
+        lol
     end
 end
 
