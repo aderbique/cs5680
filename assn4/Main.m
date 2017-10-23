@@ -64,3 +64,14 @@ figure;
 imshow(restored_BlurCity);
 title('Restored BlurCity Image');
 
+disp('-----Finish Solving Problem 2----');
+disp('Press any key to continue');
+pause;
+disp("%%%%%%%%% Problem 3 %%%%%%%%%");
+
+% Problem 3.1
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 3.2
+

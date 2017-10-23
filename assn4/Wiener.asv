@@ -57,21 +57,14 @@ for i = 1:P
 end
 
 
+
+
 G = zeros(P,Q);
 for i = 1:P
     for j = 1:Q
         G(i,j) = DFT(i,j)*H(i,j);
     end
 end
-
-Restored = zeros(P,Q);
-for i = 1:P
-    for j = 1:Q
-        g = .1;
-        Restored(i,j) = (1/H(i,j))*((abs(H(i,j))^2)/((abs(H(i,j))^2)+g))*G(i,j);
-    end
-end
-
 
 %  figure;
 %  imshow(H);
@@ -84,7 +77,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%
 % Step 6
 processedIm = zeros(P,Q);
-IDFT = ifft2(Restored);
+IDFT = ifft2(G);
 for i = 1:P
     for j = 1:Q
         processedIm(i,j) = IDFT(i,j).*(-1)^(i+j);
@@ -114,7 +107,6 @@ end
 filteredIm = finalIm*255;
 %filteredIm = imadjust(filteredIm);
 filteredIm = uint8(filteredIm);
-filteredIm = imadjust(filteredIm);
 %filteredIm = ((filteredIm + min(min(filteredIm)))/max(max(filteredIm)))*255;
 H = uint8(HH*255);
 
