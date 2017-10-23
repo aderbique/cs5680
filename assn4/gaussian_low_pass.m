@@ -1,4 +1,4 @@
-function [filteredIm] = gaussian_low_pass(Im)
+function [H,filteredIm] = gaussian_low_pass(Im)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -29,6 +29,11 @@ for i = 1:P
         %disp(PP(i,j));
     end
 end
+
+%figure;
+%imshow(PP);
+%title('Preprocessed Image');
+%figure;
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 4
 DFT = fft2(PP);
@@ -56,19 +61,32 @@ for i = 1:P
     end
 end
 
-figure;
-imshow(G);
-title('Step 5 After Filter');
-figure;
+%  figure;
+%  imshow(H);
+%  title('Filter H');
+%  
+%  figure;
+%  imshow(G);
+%  title('Step 5 After Filter');
+%  figure;
 %%%%%%%%%%%%%%%%%%%%%%
 % Step 6
 processedIm = zeros(P,Q);
-IDFT = ifft(G);
+IDFT = ifft2(G);
 for i = 1:P
     for j = 1:Q
-        processedIm(i,j) = real(IDFT(i,j)).*(-1)^(i+j);
+        processedIm(i,j) = IDFT(i,j).*(-1)^(i+j);
     end
 end
+
+% figure;
+% imshow(IDFT);
+% title('Inverse FFT');
+% 
+% figure;
+% imshow(processedIm);
+% title('processed Im');
+% figure;
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Step 7
@@ -79,8 +97,8 @@ for i = 1:M
     end
 end
 
-filteredIm = finalIm;
-filteredIm = imadjust(filteredIm);
+filteredIm = finalIm*255;
+%filteredIm = imadjust(filteredIm);
 filteredIm = uint8(filteredIm);
 %filteredIm = ((filteredIm + min(min(filteredIm)))/max(max(filteredIm)))*255;
 

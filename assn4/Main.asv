@@ -43,24 +43,17 @@ disp("%%%%%%%%% Problem 2 %%%%%%%%%");
 
 % Problem 2.1
 City = imread('City.jpg');
-[Filter_City, BlurCity] = turbulizeIm(City);
-imwrite(BlurCity,'BlurCity.bmp');
+[Filter_CityBlurCity = turbulizeIm(City);
 
-figure;
-subplot(2,2,1);
-imshow(Filter_City);
-title('Filter H');
-
-subplot(2,2,2);
-imshow(BlueCity);
-title('Turbulent Image, BlurCity');
-
-%%%%%%%%%%%%%%%%%%%%%
-% Problem 2.2
-BlurCity = imread('BlurCity.bmp');
 restored_BlurCity = Wiener(BlurCity);
 
 figure;
-imshow(restored_BlurCity);
-title('Restored BlurCity Image');
+subplot(2,2,1);
+imshow(Sample);
+title('Original Image');
+
+subplot(2,2,2);
+imshow(Butterworth_Filter);
+title('Butterworth HP Filter');
+
 

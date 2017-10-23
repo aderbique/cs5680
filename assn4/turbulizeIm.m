@@ -1,5 +1,5 @@
-function [H,filteredIm] = butterworth_high_pass(Im)
-%UNTITLED3 Summary of this function goes here
+function [H,filteredIm] = turbulizeIm(Im)
+%UNTITLED6 Summary of this function goes here
 %   Detailed explanation goes here
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 1
@@ -109,3 +109,4 @@ filteredIm = uint8(filteredIm);
 
 
 end
+

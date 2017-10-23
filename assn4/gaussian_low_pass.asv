@@ -29,9 +29,14 @@ for i = 1:P
         %disp(PP(i,j));
     end
 end
+
+%figure;
+%imshow(PP);
+%title('Preprocessed Image');
+%figure;
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 4
-%DFT = fft2(PP);
+DFT = fft2(PP);
 %figure;
 %imshow(DFT)
 %title('DFT');
@@ -56,9 +61,13 @@ for i = 1:P
     end
 end
 
-figure;
-imshow(G);
-title('T
+% figure;
+% imshow(H);
+% title('Filter H');
+% 
+% figure;
+% imshow(G);
+% title('Step 5 After Filter');
 %%%%%%%%%%%%%%%%%%%%%%
 % Step 6
 processedIm = zeros(P,Q);
@@ -68,6 +77,14 @@ for i = 1:P
         processedIm(i,j) = real(IDFT(i,j)).*(-1)^(i+j);
     end
 end
+
+figure;
+imshow(IDFT);
+title('Inverse FFT');
+
+figure;
+imshow(processedIm);
+title('
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Step 7

@@ -1,4 +1,4 @@
-function [H,filteredIm] = butterworth_high_pass(Im)
+function [filteredIm] = butterworth_high_pass(Im)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,14 +50,9 @@ center_v = floor(Q/2+1);
 for i = 1:P
     for j = 1:Q
         %H(i,j) = exp((-(i-center_u)^2-(j-center_v)^2)/((2*25^2)+(2*50^2)));
-        H(i,j) = (1/(1+(30/(i-center_u))^4))+(1/(1+(30/(j-center_v))^4));
+        H(i,j) = 1/(
     end
 end
-
-% figure;
-% imshow(H);
-% title('Butterworth Mask');
-% figure;
 
 G = zeros(P,Q);
 for i = 1:P
