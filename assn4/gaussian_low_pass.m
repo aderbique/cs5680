@@ -91,9 +91,11 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%
 % Step 7
 finalIm = zeros(M,N);
+HH = zeros(M,N);
 for i = 1:M
     for j = 1:N
         finalIm(i,j) = processedIm(i,j);
+        HH(i,j) = H(center_u-P/4 + i,center_v-Q/4 + j);
     end
 end
 
@@ -101,7 +103,6 @@ filteredIm = finalIm*255;
 %filteredIm = imadjust(filteredIm);
 filteredIm = uint8(filteredIm);
 %filteredIm = ((filteredIm + min(min(filteredIm)))/max(max(filteredIm)))*255;
-
+H = uint8(HH*255);
 
 end
-

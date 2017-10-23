@@ -52,7 +52,7 @@ imshow(Filter_City);
 title('Filter H');
 
 subplot(2,2,2);
-imshow(BlueCity);
+imshow(BlurCity); 
 title('Turbulent Image, BlurCity');
 
 %%%%%%%%%%%%%%%%%%%%%
