@@ -66,7 +66,10 @@ restored_BlurCity = Wiener1(BlurCity);
 
 figure, imshow(restored_BlurCity); 
 title('Restored BlurCity Image');
-imwrite(restored_BlurCity,'restored_BlurCity.jpg');
+imwrite(restored_BlurCity,'restored_BlurCity.jpb
+
+disp('Press any key to continue');
+pause;
 
 disp('-----Finish Solving Problem 2----');
 disp('Press any key to continue');

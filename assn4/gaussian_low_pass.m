@@ -58,8 +58,6 @@ for i = 1:P
 end
 
 
-
-G = zeros(P,Q);
 G = DFT .* H ;
 
 filteredIm = ifft2(ifftshift(G));

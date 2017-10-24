@@ -15,10 +15,10 @@ for i = 1:P
     end
 end
 
-%GP = fft2(ifftshift(Im));
-GP = ifftshift(fft2(Im));
+GP = fft2(ifftshift(Im));
+%GP = ifftshift(fft2(Im));
 %GP = DFT;
-g = 1.5;
+g = .005005;
 F = (GP./H).*((abs(H)^2)./((abs(H)^2) + g));
 
 
