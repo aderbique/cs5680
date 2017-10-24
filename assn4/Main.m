@@ -132,3 +132,9 @@ disp("%%%%%%%%% Problem 4 %%%%%%%%%");
 
 % Problem 4.1
 boy_noisy = imread('boy_noisy.gif');
+DFT_boy_noisy = fft2(boy_noisy);
+
+% Problem 4.2
+mag_DFT_boy_noisy = abs(DFT_boy_noisy);
+disp(max(max(mag_DFT_boy_noisy)));
+
