@@ -43,17 +43,84 @@ disp("%%%%%%%%% Problem 2 %%%%%%%%%");
 
 % Problem 2.1
 City = imread('City.jpg');
-[Filter_CityBlurCity = turbulizeIm(City);
-
-restored_BlurCity = Wiener(BlurCity);
+[Filter_City, BlurCity] = turbulizeIm(City);
+imwrite(BlurCity,'BlurCity.bmp');
 
 figure;
 subplot(2,2,1);
-imshow(Sample);
-title('Original Image');
+imshow(Filter_City);
+title('Filter H');
 
 subplot(2,2,2);
-imshow(Butterworth_Filter);
-title('Butterworth HP Filter');
+imshow(BlurCity); 
+title('Turbulent Image, BlurCity');
 
+%%%%%%%%%%%%%%%%%%%%%
+% Problem 2.2
+BlurCity = imread('BlurCity.bmp');
+restored_BlurCity = Wiener(BlurCity);
+
+figure;
+imshow(restored_BlurCity);
+title('Restored BlurCity Image');
+
+disp('-----Finish Solving Problem 2----');
+disp('Press any key to continue');
+pause;
+disp("%%%%%%%%% Problem 3 %%%%%%%%%");
+
+% Problem 3.1
+FFT_Sample = fft2(double(Sample));
+mag_Sample = abs(FFT_Sample);
+mag_Sample = log(1+fftshift(FFT_Sample));
+phase_Sample = uint8(ifftshift(ifft2(abs(FFT_Sample))));
+
+Capitol = imread('Capitol.jpg');
+FFT_Capitol = fft2(double(Capitol));
+mag_Capitol = abs(FFT_Capitol);
+mag_Capitol = log(1+fftshift(FFT_Capitol));
+phase_Capitol = uint8(ifftshift(ifft2(abs(FFT_Capitol))));
+
+figure;
+subplot(2,2,1);
+imshow(mag_Sample,[]);
+title('Magnitude of Sample');
+
+subplot(2,2,2);
+imshow(phase_Sample);
+title('Phase of Sample');
+
+subplot(2,2,3);
+imshow(mag_Capitol,[]);
+title('Magnitude of Capitol');
+
+subplot(2,2,4);
+imshow(phase_Capitol);
+title('Phase of Capitol');
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 3.2
+% freqDomain_Sample = abs(FFT_Capitol).*exp(1i*angle(FFT_Sample));
+% freqDomain_Capitol = abs(FFT_Sample).*(1i*angle(FFT_Capitol));
+mag_Sample = abs(fftshift(FFT_Sample));
+mag_Capitol = abs(fftshift(FFT_Capitol));
+
+phase_Sample = angle(fftshift(FFT_Sample));
+phase_Capitol = angle(fftshift(FFT_Capitol));
+
+
+freqDomain_Sample = abs(.*exp(1i*phase_Sample);
+freqDomain_Capitol = mag_Sample.*exp(1i*phase_Capitol);
+
+new_Sample = ifft2(freqDomain_Sample);
+new_Capitol = ifft2(freqDomain_Capitol);
+
+figure;
+subplot(2,2,1);
+imshow(new_Capitol);
+title('Reconstructed Capitol');
+
+subplot(2,2,2);
+imshow(new_Sample);
+title('Reconstructed Sample');
 
