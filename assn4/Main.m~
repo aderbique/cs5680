@@ -173,16 +173,9 @@ disp('Press any key to continue');
 pause;
 disp("%%%%%%%%% Problem 6 %%%%%%%%%");
 
-% Problem 6.1
-noisy_Lena = imnoise(Lena,'gaussian',0,0.01);
-
-% Problem 6.2
-decomp_Lena = wpdec2(Lena,3,'db2');
-
-% Problem  6.3
 
 
 disp('-----Finish Solving Problem 6----');
-disp('Press any key to close all figures');
+disp('Press any key to continue');
 pause;
-close all;
+disp("%%%%%%%%% Problem 5 %%%%%%%%%");

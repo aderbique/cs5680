@@ -1,0 +1,16 @@
+function [filteredIm] = remove_cosine_noise(Im)
+%UNTITLED9 Summary of this function goes here
+%   Detailed explanation goes here
+DFT_Im = fft2(double(Im));
+
+% Problem 4.2
+mag_DFT_boy_noisy = abs(DFT_Im);
+
+histogram(mag_DFT_boy_noisy);
+
+
+DFT_transform_Im = mag_DFT_boy_noisy;
+
+filteredIm = ifft2(DFT_transform_Im);
+end
+
