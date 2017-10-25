@@ -22,7 +22,7 @@ magCFBoy = abs(CFBoy);
 
 [Out, Index] = sort(magCFBoy(:), 'descend');
 
-[row1,col1] = ind2sub(size(magCFBoy), Index(1));
+%[row1,col1] = ind2sub(size(magCFBoy), Index(1));
 [row2,col2] = ind2sub(size(magCFBoy), Index(2));
 [row3,col3] = ind2sub(size(magCFBoy), Index(3));
 [row4,col4] = ind2sub(size(magCFBoy), Index(4));
@@ -41,11 +41,8 @@ magCFBoy = modify_point(row8,col8,magCFBoy);
 magCFBoy = modify_point(row9,col9,magCFBoy);
 
 disp("I have found the largest magnitudes and found their indices. It can be noted they are complex conjugates of each other:");
-disp("Point 1, The largest point (" + row1 + "," + col1 + ") with magnitude of:." + Out(1) + ".");
-disp("Group 1: (" + row2 + "," + col2 + ") and  (" + row3 + "," + col3 + ") with magnitude of: " + Out(2) + ".");
-disp("Group 2: (" + row4 + "," + col4 + ") and  (" + row5 + "," + col5 + ") with magnitude of: " + Out(4) + ".");
-disp("Group 3: (" + row6 + "," + col6 + ") and  (" + row7 + "," + col7 + ") with magnitude of: " + Out(6) + ".");
-disp("Group 4: (" + row8 + "," + col8 + ") and  (" + row9 + "," + col9 + ") with magnitude of: " + Out(8) + ".");
+disp("Point 1, The largest point (" + row1 + "," + col1 + ").";
+disp("Group 1: 
 
 %histogram(magCFBoy);
 

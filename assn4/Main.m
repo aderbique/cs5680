@@ -149,12 +149,12 @@ subplot(2,2,2);
 imshow(boy_clean);
 title('Clean Boy');
 
-disp('Explanation goes here.');
+disp("I took the four largest distinct values of the magnitude because these corespond to the sinusoidal wave max - giving an explanation as to what the period was and how much it should be shifted by.");
 
 disp('-----Finish Solving Problem 4---- Next Problem takes a while. Please give 10-20 seconds and do not click until finishes');
 
 disp('Press any key to continue');
-pause;
+pause; 
 disp("%%%%%%%%% Problem 5 %%%%%%%%%");
 
 Lena = imread('Lena.jpg');
@@ -184,11 +184,10 @@ disp("%%%%%%%%% Problem 6 %%%%%%%%%");
 noisy_Lena = imnoise(Lena,'gaussian',0,0.01);
 imwrite(noisy_Lena,'noisy_Lena.jpg');
 
-% Problem 6.2
+% Problem 6.2 - 6.7
 decomp_Lena = wpdec2(Lena,3,'db2');
-
-% Problem  6.3
 modified_Lena = decomp_Lena;
+
 %6.8
 denoise_Lena = uint8(wprec2(modified_Lena));
 
@@ -200,9 +199,12 @@ title('Noisy Lena');
 subplot(2,2,2);
 imshow(denoise_Lena);
 title('Denoised Lena');
-
-
 disp('-----Finish Solving Problem 6----');
-disp('Press any key to close all figures');
-pause;
-close all;
+disp("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+disp("%");
+disp("%");
+disp("If you have not already, please read the README.txt document. It will make grading a lot easier :) ");
+disp("%");
+disp("%");
+disp("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
