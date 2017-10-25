@@ -12,7 +12,7 @@ Problem 1:
  
 Problem 2:
   part 1: Complete, Uses file called turbulizeIm.m
-  part 2: Complete, Uses file called Wiener.m
+  part 2: Complete, Uses file called Wiener1.m
   
 Problem 3: Complete, This part is done in Main.m
 
