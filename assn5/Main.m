@@ -7,7 +7,7 @@ City = imread('City.jpg');
 morph_grad = strel('square',3);
 
 morph_city = imdilate(City, morph_grad) - imerode(City, morph_grad);
-disp("Explanation 1");
+disp("This morpological gradient operation uses pixel restoration  and erosion to modify the image. In this case the colors are exxagerated where differences occur.");
 
 figure;
 imshow(morph_city);
@@ -122,7 +122,7 @@ subplot(2,2,2);
 imshow(co_dowel);
 title("Close Open Dowel");
 
-disp("Explanation");
+disp("The open restores pixels and the close degrades pixels. Using them differently causes a difference in whether information about the image is lost.");
 
 Dowels_A = imopen(imclose(Dowels, strel('disk',2)),strel('disk',2));
 Dowels_B = imopen(imclose(Dowels, strel('disk',3)),strel('disk',3));
@@ -166,7 +166,8 @@ subplot(2,4,8);
 imshow(co_dowel);
 title("Close Open, d=5");
 
-disp("Explanation");
+disp("The open restores pixels and the close degrades pixels. Using them differently causes a difference in whether information about the image is lost.");
+
 
 disp('-----Finish Solving Problem 1----');
 disp('Press any key to continue');
@@ -183,9 +184,6 @@ title("Connected Objects");
 
 disp("The total number of connected objects is: " + num);
 
-
-
-
 disp("%%%%%%%%% Problem 2.2 %%%%%%%%%");
 Ball = imread('Ball.tif');
 [builtin_label,builtin_num] = bwlabel(Ball);
@@ -197,46 +195,33 @@ disp("The total number of connected objects is: " + builtin_num);
 
 disp("%%%%%%%%% Problem 2.3 %%%%%%%%%");
 
-imin = imread('Ball.tif');
-
+Ball = imread('Ball.tif');
 se = strel('disk', 1);
-
-[a, b] = FindComponentLabels(imin, se);
-
-list = [a(1,:),a(:,1).',a(end,:),a(:,end).'];
-ulist = unique(list);
-
-if(ulist(1)==0)
-    ulist = ulist(2:end);
+% [A, B] = FindComponentLabels(Ball, se);
+% list = [A(1,:),A(:,1).',A(end,:),A(:,end).'];
+% bin_array = unique(list);
+[A, B] = FindComponentLabels(Ball, se);
+list = [A(1,:),A(:,1).',A(end,:),A(:,end).'];
+bin_array = unique(list);
+if(bin_array(1)==0)
+    bin_array = bin_array(2:end);
 end
 
-for i = ulist
-    a(a==i)=-1;
+for i = bin_array
+    A(A==i)=-1;
 end
+A(A~=-1) = 0;
+A = -A;
+figure;
+subplot(2,2,1);
+imshow((Ball));
+title('Original Image');
 
-a(a~=-1) = 0;
+subplot(2,2,2);
+imshow(A);
+title 'Border '
 
-a = -a;
-
-figure(9);
-subplot(1,2,1);
-imshow((imin));
-title 'Original Image'
-subplot(1,2,2);
-imshow((a));
-title 'Connected Particles on border'
-
-% A = ConnectedParticles(Ball);
-% figure;
-% subplot(2,2,1);
-% imshow('Ball');
-% title('Original Image');
-% 
-% subplot(2,2,2);
-% imshow(A);
-% title("Connected Particles");
-
-disp("Number of connected particles residing on the border: " );
+disp("Count of connected particles on border of image is: " );
 
 disp("%%%%%%%%% Problem 2.4 %%%%%%%%%");
 
@@ -254,13 +239,17 @@ disp("%%%%%%%%% Problem 2.4 %%%%%%%%%");
 
 Ball = imread('Ball.tif');
 se = strel('disk', 1);
+% [A, B] = FindComponentLabels(Ball, se);
+% list = [A(1,:),A(:,1).',A(start,:),A(:,end).'];
+% bin_array = unique(list);
+
 [A, B] = FindComponentLabels(Ball, se);
-list = [a(1,:),a(:,1).',a(end,:),a(:,end).'];
-ulist = unique(list);
-if(ulist(1)==0)
-    ulist = ulist(2:end);
+list = [A(1,:),A(:,1).',A(end,:),A(:,end).'];
+bin_array = unique(list);
+if(bin_array(1)==0)
+    bin_array = bin_array(2:end);
 end
-for i = ulist
+for i = bin_array
     A(A==i)=-1;
 end
 A(A~=-1) = 0;
@@ -268,35 +257,35 @@ A = -A;
 A = ~A;
 modified_ball = A & Ball;
 [A, B] = FindComponentLabels(modified_ball, se);
-vlas = histcounts(A(A~=0));
-min(round(vlas,-2));
-singles = find(round(vlas,-2) == min(round(vlas,-2)));
+%[A, B] = dwb(modified_ball, se);
+num_counts = histcounts(A(A~=0));
+min(round(num_counts,-2));
+%min(round(num_counts,-3));
+
+solo_array = find(round(num_counts,-2) == min(round(num_counts,-2)));
 Overlap_Ball = A;
-for s = singles
-    Overlap_Ball(A == s) = 0;
+for single = solo_array
+    Overlap_Ball(A == single) = 0;
 end
 
-figure(10)
-subplot(1,2,1)
-imshow(imin)
-title 'Original Image'
-subplot(1,2,2)
+
+figure;
+subplot(2,2,1);
+imshow(Ball);
+title('Original Image')
+subplot(2,2,2);
 imshow(Overlap_Ball)
-title 'Overlapping Connected Particles not on border'
+title 'No Border'
 
-ulist2 = unique(Overlap_Ball(:));
-if(ulist2(1)==0)
-    ulist2 = ulist2(2:end);
+% ball_array = unique(Overlap_Ball(:));
+% if(ball_array(1)==1)
+%     ball_array = ball_array(1:end);
+% end
+ball_array = unique(Overlap_Ball(:));
+if(ball_array(1)==0)
+    ball_array = ball_array(2:end);
 end
-
-fprintf('Problem II.4: Overlapping Connected Particles not on border = %d\n', size(ulist2(:),1));
-
-
-
-
+disp("Overlapped connected particles not on border: " + size(ball_array(:),1));
 disp('-----Finish Solving Problem 2----');
-
-
-
 
     
