@@ -59,7 +59,48 @@ title("Original Image with Centroid Cross");
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 1.2 
 
+redChannel = rgb(:,:,1); % Red channel
+greenChannel = rgb(:,:,2); % Green channel
+blueChannel = rgb(:,:,3); % Blue channel
 
+greenThresh = greenChannel > 20 & greenChannel < 95;
+shadow = medfilt2(greenThresh,[11,11]); %gets rid of salt and pepper
+shadow(375:end,:) = false; %gets rid of bottom lines
+shadow(1:100,:) = false; %gets rid of top lines
+shadow(:,1:100) = false; %gets rid of left lines
+shadow(:,575:600) = false; %gets rid of right lines
+%shadow = imcomplement(shadow); %flips color of image
+
+[rows,cols] = size(shadow);
+ballWithShadow = rgb;
+for i=1:rows
+    for j = 1:cols
+        if shadow(i,j) == 1
+            ballWithShadow(i,j,:)  = [0,0,255];
+        end
+    end
+end
+
+figure;
+subplot(2,2,1);
+imshow(rgb);
+title("Original Image");
+
+subplot(2,2,2);
+imshow(greenChannel);
+title("Green Channel");
+
+subplot(2,2,3);
+imshow(greenThresh);
+title("Green Thresh");
+
+subplot(2,2,4);
+imshow(shadow);
+title("Shadow");
+
+figure;
+imshow(ballWithShadow);
+title("Ball with Shadow");
 
 disp('-----Finish Solving Problem 1----');
 disp('Press any key to continue');
