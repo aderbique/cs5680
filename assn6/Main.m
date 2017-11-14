@@ -7,8 +7,8 @@ disp("----------- Problem 1 Color Image Processing -----------");
 rgb = imread('ball.bmp');
 hsv = rgb2hsv(rgb);
 huespace = hsv(:,:,1);
-saturationspace = hsv(:,1,:);
-valuespace = hsv(1,:,:);
+saturationspace = hsv(:,:,2);
+valuespace = hsv(:,:,3);
 
 
 threshIm = imbinarize(huespace,.1); %converts to binary image with threshold of .1 to isolate ball
@@ -22,14 +22,14 @@ isolatedIm = imcomplement(isolatedIm); %flips color of image
     
 centroid  = regionprops(isolatedIm,'centroid'); %gets center coords of ball
 
-disp(length(centroid))
+%disp(length(centroid))
 
 for i=1:length(centroid)
     centroidx = uint16(centroid(i).Centroid(1));
     centroidy = uint16(centroid(i).Centroid(2));
 end
 
-disp(centroidx + " " + centroidy)
+%disp(centroidx + " " + centroidy)
 
 ballWithCentroid = insertMarker(rgb,[centroidx centroidy],'color','blue','size',15);
 
@@ -107,13 +107,73 @@ disp('Press any key to continue');
 pause; 
 disp("----------- Problem 2 Simple Color Image Retrieval -----------");
 % Problem 2.1
+Horse1 = imread('Horse1.jpg');
+histHorse1 = CalNormalizedHSVHist(Horse1,4,4,4);
 
-
-
+% figure;
+% subplot(2,2,1);
+% imshow(Horse1);
+% title("Horse1.jpg");
+% 
+% subplot(2,2,2);
+% bar(histHorse1);
+% axis([0,64 0 50000]);
+% xtickformat(1);
+% title("Histogram of Horse1.jpg")
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2.2
 
+Elephant1 = imread('Elephant1.jpg');
+Elephant2 = imread('Elephant2.jpg');
+
+Horse1 = imread('Horse1.jpg');
+Horse2 = imread('Horse2.jpg');
+
+H1 = CalNormalizedHSVHist(Horse1,4,4,4);
+H2 = CalNormalizedHSVHist(Horse2,4,4,4);
+E1 = CalNormalizedHSVHist(Elephant1,4,4,4);
+E2 = CalNormalizedHSVHist(Elephant2,4,4,4);
+
+figure;
+subplot(2,2,1);
+bar(H1);
+axis([0,64 0 35000])
+title("Horse 1");
+
+subplot(2,2,2);
+bar(H2);
+axis([0,64 0 35000])
+title("Horse 2");
+
+subplot(2,2,3);
+bar(E1);
+axis([0,64 0 35000])
+title("Elephant 1");
+
+subplot(2,2,4);
+bar(E2);
+axis([0,64 0 35000])
+title("Elephant 2");
+
+ImageDB = [Horse1,Horse2,Elephant1,Elephant2];
+%%%%%%%%
+%Query 1
+
+h1_sim = ImageSimilarity(Horse1,ImageDB);
+
+figure;
+subplot(2,2,1);
+%%%%%%%%
+%Query 2
+
+
+%%%%%%%%
+%Query 3
+
+
+%%%%%%%%
+%Query 4
 
 disp('-----Finish Solving Problem 2----');
 disp('Press any key to continue');
@@ -121,7 +181,15 @@ pause;
 disp("----------- Problem 3 A Simple Watermarking Technique in Wavelet Domain -----------");
 % Problem 3.1
 
+Lena = imread('Lena.jpg');
+[rows,cols] = size(Lena);
+L = wmaxlev([rows cols],'db9');
+X = floor(L/2);
 
+decompLena = wavedec3(Lena,X,'db9');
+[rows,cols] = size(decompLena);
+s = rng(1,'twister');
+b = randi(0:1,rows,cols);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3.2
