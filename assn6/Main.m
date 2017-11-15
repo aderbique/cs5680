@@ -158,23 +158,95 @@ title("Elephant 2");
 
 %ImageDB = [Horse1,Horse2,Elephant1,Elephant2];
 ImageDB = {'Horse1','Horse2','Elephant1','Elephant2';Horse1,Horse2,Elephant1,Elephant2;H1,H2,E1,E2;0,0,0,0};
+
+H1_sim = ImageSimilarity(Horse1,ImageDB);
+H2_sim = ImageSimilarity(Horse2,ImageDB);
+E1_sim = ImageSimilarity(Elephant1,ImageDB);
+E2_sim = ImageSimilarity(Elephant2,ImageDB);
+
+
 %%%%%%%%
 %Query 1
+figure;
+s(1) = subplot(2,2,1);
+imshow(H1_sim{2,1});
+title(s(1),H1_sim{1,1} + ", Match: " + H1_sim{4,1} + "%");
 
-h1_sim = ImageSimilarity(Horse1,ImageDB);
+s(2) = subplot(2,2,2);
+imshow(H1_sim{2,2});
+lol = H1_sim{2,2} + ", Match: " + H1_sim{4,2} + "%";
+title(s(2), lol);
+
+s(3) = subplot(2,2,3);
+imshow(H1_sim{2,3});
+title(s(3),H1_sim{1,3} + ", Match: " + H1_sim{4,3} + "%");
+
+s(4) = subplot(2,2,4);
+imshow(H1_sim{2,4});
+title(s(4),H1_sim{1,4} + ", Match: " + H1_sim{4,4} + "%");
+
+
+%%%%%%%%
+%Query 2
 
 figure;
 subplot(2,2,1);
-%%%%%%%%
-%Query 2
+imshow(H2_sim{2,1});
+title(H2_sim{1,1} + ", Match: " + H2_sim{4,1} + "%");
+
+subplot(2,2,2);
+imshow(H2_sim{2,2});
+title(H2_sim{2,2} + ", Match: " + H2_sim{4,2} + "%");
+
+subplot(2,2,3);
+imshow(H2_sim{2,3});
+title(H2_sim{1,3} + ", Match: " + H2_sim{4,3} + "%");
+
+subplot(2,2,4);
+imshow(H2_sim{2,4});
+title(H2_sim{1,4} + ", Match: " + H2_sim{4,4} + "%");
 
 
 %%%%%%%%
 %Query 3
 
+figure;
+subplot(2,2,1);
+imshow(E1_sim{2,1});
+title(E1_sim{1,1} + ", Match: " + E1_sim{4,1} + "%");
+
+subplot(2,2,2);
+imshow(E1_sim{2,2});
+title(E1_sim{2,2} + ", Match: " + E1_sim{4,2} + "%");
+
+subplot(2,2,3);
+imshow(E1_sim{2,3});
+title(E1_sim{1,3} + ", Match: " + E1_sim{4,3} + "%");
+
+subplot(2,2,4);
+imshow(E1_sim{2,4});
+title(E1_sim{1,4} + ", Match: " + E1_sim{4,4} + "%");
+
 
 %%%%%%%%
 %Query 4
+
+figure;
+subplot(2,2,1);
+imshow(E2_sim{2,1});
+title(E2_sim{1,1} + ", Match: " + E2_sim{4,1} + "%");
+
+subplot(2,2,2);
+imshow(E2_sim{2,2});
+title(E2_sim{2,2} + ", Match: " + E2_sim{4,2} + "%");
+
+subplot(2,2,3);
+imshow(E2_sim{2,3});
+title(E2_sim{1,3} + ", Match: " + E2_sim{4,3} + "%");
+
+subplot(2,2,4);
+imshow(E2_sim{2,4});
+title(E2_sim{1,4} + ", Match: " + E2_sim{4,4} + "%");
 
 disp('-----Finish Solving Problem 2----');
 disp('Press any key to continue');
@@ -187,11 +259,74 @@ Lena = imread('Lena.jpg');
 [decompLena, S] = wavedec2(Lena,3,'db9');
 [rows,cols] = size(decompLena);
 s = rng(1,'twister');
+rng(s);
 b = randi(0:1,rows,cols);
+
+beta = 30;
+modifiedLena1 = decompLena;
+for i = 1:rows
+    for j = 1:cols
+        if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
+            modifiedLena1(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
+        elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
+            modifiedLena1(i,j) = (decompLena(i,j) - .25*beta) - (mod((decompLena(i,j) - .25*beta), beta)) + .75*beta;
+        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) <= (.75*beta)
+            modifiedLena1(i,j) = decompLena(i,j) - (mod(decompLena(i,j),beta)) + .25*beta;
+        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) > (.75*beta)
+            modifiedLena1(i,j) = (decompLena(i,j) + .5*beta) - mod((decompLena(i,j) - .5*beta),beta) + .25*beta;
+        end
+    end
+end
+
+reconstructedLena1 = uint8(waverec2(modifiedLena1,S,'db9'));
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+beta = 90;
+modifiedLena2 = decompLena;
+for i = 1:rows
+    for j = 1:cols
+        if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
+            modifiedLena2(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
+        elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
+            modifiedLena2(i,j) = (decompLena(i,j) - .25*beta) - (mod((decompLena(i,j) - .25*beta), beta)) + .75*beta;
+        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) <= (.75*beta)
+            modifiedLena2(i,j) = decompLena(i,j) - (mod(decompLena(i,j),beta)) + .25*beta;
+        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) > (.75*beta)
+            modifiedLena2(i,j) = (decompLena(i,j) + .5*beta) - mod((decompLena(i,j) - .5*beta),beta) + .25*beta;
+        end
+    end
+end
+
+reconstructedLena2 = uint8(waverec2(modifiedLena1,S,'db9'));
+
+figure;
+subplot(2,2,1);
+imshow(imadjust(Lena));
+title("Scaled Lena");
+
+subplot(2,2,2);
+imshow(imadjust(reconstructedLena1));
+title("Scaled, Watermarked Lena beta=30");
+
+subplot(2,2,3);
+imshow(imadjust(Lena));
+title("Scaled Lena");
+
+subplot(2,2,4);
+imshow(imadjust(reconstructedLena2));
+title("Scaled, Watermarked Lena beta=90");
+        
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3.2
+
+
+
+
 
 
 disp('-----Finish Solving Problem 3----');

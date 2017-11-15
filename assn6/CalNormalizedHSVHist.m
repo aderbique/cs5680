@@ -48,5 +48,6 @@ function [normalizedHist] = CalNormalizedHSVHist(Im,HbinNum,SbinNum,VbinNum)
     end
     %normalizedHist = histArr;
     normalizedHist = finalArr;
+    normalizedHist(1,:) = normalizedHist(1,:)./double(rows*cols);
 end
 
