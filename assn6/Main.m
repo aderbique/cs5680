@@ -168,22 +168,22 @@ E2_sim = ImageSimilarity(Elephant2,ImageDB);
 %%%%%%%%
 %Query 1
 figure;
-s(1) = subplot(2,2,1);
+subplot(2,2,1);
 imshow(H1_sim{2,1});
-title(s(1),H1_sim{1,1} + ", Match: " + H1_sim{4,1} + "%");
+title(H1_sim{1,1} + ", Match: " + H1_sim{4,1} + "%");
 
-s(2) = subplot(2,2,2);
+subplot(2,2,2);
 imshow(H1_sim{2,2});
 lol = H1_sim{2,2} + ", Match: " + H1_sim{4,2} + "%";
-title(s(2), lol);
+title(lol);
 
-s(3) = subplot(2,2,3);
+subplot(2,2,3);
 imshow(H1_sim{2,3});
-title(s(3),H1_sim{1,3} + ", Match: " + H1_sim{4,3} + "%");
+title(H1_sim{1,3} + ", Match: " + H1_sim{4,3} + "%");
 
-s(4) = subplot(2,2,4);
+subplot(2,2,4);
 imshow(H1_sim{2,4});
-title(s(4),H1_sim{1,4} + ", Match: " + H1_sim{4,4} + "%");
+title(H1_sim{1,4} + ", Match: " + H1_sim{4,4} + "%");
 
 
 %%%%%%%%
@@ -260,12 +260,13 @@ Lena = imread('Lena.jpg');
 [rows,cols] = size(decompLena);
 s = rng(1,'twister');
 rng(s);
-b = randi(0:1,rows,cols);
+%b = randi(0:1,rows,cols);
+b = randi(0:1,1,rows*cols);
 
 beta = 30;
 modifiedLena1 = decompLena;
-for i = 1:rows
-    for j = 1:cols
+for i = 1:1
+    for j = 1:rows*cols
         if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
             modifiedLena1(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
         elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
@@ -286,8 +287,8 @@ reconstructedLena1 = uint8(waverec2(modifiedLena1,S,'db9'));
 
 beta = 90;
 modifiedLena2 = decompLena;
-for i = 1:rows
-    for j = 1:cols
+for i = 1:1
+    for j = 1:rows*cols
         if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
             modifiedLena2(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
         elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
@@ -320,13 +321,61 @@ imshow(imadjust(reconstructedLena2));
 title("Scaled, Watermarked Lena beta=90");
         
 
-%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3.2
+[H1, S1] = wavedec2(reconstructedLena1,3,'db9');
+[H2, S2] = wavedec2(reconstructedLena2,3,'db9');
 
+BP1 = zeros(rows,cols);
+BP2 = zeros(rows,cols);
 
+[rows,cols] = size(decompLena);
 
+for i = 1:1
+    for j = 1:rows*cols
+        if mod(H1(i,j),30) > (30/2)
+            BP1(i,j) = 1;
+        end
+        if mod(H2(i,j),90) > (90/2)
+            BP2(i,j) = 1;
+        end
+    end
+end
 
+disp("Comparing the b matrices...");
+if isequal(b,BP1)
+    disp("Original B and BP1 from reconstructed 1 are equal");
+else
+    disp("b and bp1 not equal");
+end
+
+if isequal(b,BP2)
+    disp("Original B and BP2 from reconstructed 2 are equal");
+else
+    disp("b and bp2 not equal");
+    
+end
+
+if isequal(b,BP1) && isequal(b,BP2)
+    disp("All three matrices are equal. Woohoo!");
+end
+
+bp1_count = 0;
+bp2_count = 0;
+for i = 1:rows*cols
+  
+    if BP1(1,i) == b(1,i)
+        bp1_count = bp1_count + 1;
+    end
+    if BP2(1,i) == b(1,i)
+        bp2_count = bp2_count + 1;
+    end
+end
+
+bp1_count = bp1_count * 100 ./ (rows*cols);
+bp2_count = bp2_count * 100 ./(rows*cols);
+
+disp("The percent of pixels macthing between b and BP1: " + bp1_count + "% and between b and BP2: " + bp2_count + "%");
 
 
 disp('-----Finish Solving Problem 3----');
