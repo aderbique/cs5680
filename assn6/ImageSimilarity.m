@@ -41,7 +41,7 @@ function [matchResults] = ImageSimilarity(Im, ImageDB)
         Similarities{4,k} = similarityScore;
               
     end
-    disp("\n");
+    disp("");
     
     A = zeros(1,numImages);
     for i = 1:numImages

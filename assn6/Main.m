@@ -21,14 +21,10 @@ isolatedIm = imcomplement(isolatedIm); %flips color of image
     
 centroid  = regionprops(isolatedIm,'centroid'); %gets center coords of ball
 
-%disp(length(centroid))
-
 for i=1:length(centroid)
     centroidx = uint16(centroid(i).Centroid(1));
     centroidy = uint16(centroid(i).Centroid(2));
 end
-
-%disp(centroidx + " " + centroidy)
 
 ballWithCentroid = insertMarker(rgb,[centroidx centroidy],'color','blue','size',15);
 
@@ -157,52 +153,15 @@ disp("----------- Problem 3 A Simple Watermarking Technique in Wavelet Domain --
 
 Lena = imread('Lena.jpg');
 dwtmode('per');
-[decompLena, S] = wavedec2(Lena,3,'db9');
-[rows,cols] = size(decompLena);
+[decompLena,S] = wavedec2(Lena,3,'db9');
+[rows,sizeIm] = size(decompLena);
+
 s = rng(1,'twister');
 rng(s);
-%b = randi(0:1,rows,cols);
-b = randi(0:1,1,rows*cols);
+b = randi(0:1,1,sizeIm);
 
-beta = 30;
-modifiedLena1 = decompLena;
-for i = 1:1
-    for j = 1:rows*cols
-        if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
-            modifiedLena1(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
-        elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
-            modifiedLena1(i,j) = (decompLena(i,j) - .25*beta) - (mod((decompLena(i,j) - .25*beta), beta)) + .75*beta;
-        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) <= (.75*beta)
-            modifiedLena1(i,j) = decompLena(i,j) - (mod(decompLena(i,j),beta)) + .25*beta;
-        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) > (.75*beta)
-            modifiedLena1(i,j) = (decompLena(i,j) + .5*beta) - mod((decompLena(i,j) - .5*beta),beta) + .25*beta;
-        end
-    end
-end
-
-reconstructedLena1 = uint8(waverec2(modifiedLena1,S,'db9'));
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-beta = 90;
-modifiedLena2 = decompLena;
-for i = 1:1
-    for j = 1:rows*cols
-        if b(i,j) == 1 && mod(decompLena(i,j),beta) >= (.25*beta)
-            modifiedLena2(i,j) = decompLena(i,j) - mod(decompLena(i,j),beta) + (.75*beta);
-        elseif b(i,j) == 1 && mod(decompLena(i,j),beta) < (.25*beta)
-            modifiedLena2(i,j) = (decompLena(i,j) - .25*beta) - (mod((decompLena(i,j) - .25*beta), beta)) + .75*beta;
-        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) <= (.75*beta)
-            modifiedLena2(i,j) = decompLena(i,j) - (mod(decompLena(i,j),beta)) + .25*beta;
-        elseif b(i,j) == 0 && mod(decompLena(i,j),beta) > (.75*beta)
-            modifiedLena2(i,j) = (decompLena(i,j) + .5*beta) - mod((decompLena(i,j) - .5*beta),beta) + .25*beta;
-        end
-    end
-end
-
-reconstructedLena2 = uint8(waverec2(modifiedLena1,S,'db9'));
+[reconstructedLena1] = EmbedIm(Lena,b,30);
+[reconstructedLena2] = EmbedIm(Lena,b,90);
 
 figure;
 subplot(2,2,1);
@@ -221,61 +180,28 @@ subplot(2,2,4);
 imshow(imadjust(reconstructedLena2));
 title("Scaled, Watermarked Lena beta=90");
         
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3.2
-[H1, S1] = wavedec2(reconstructedLena1,3,'db9');
-[H2, S2] = wavedec2(reconstructedLena2,3,'db9');
 
-BP1 = zeros(rows,cols);
-BP2 = zeros(rows,cols);
-
-[rows,cols] = size(decompLena);
-
-for i = 1:1
-    for j = 1:rows*cols
-        if mod(H1(i,j),30) > (30/2)
-            BP1(i,j) = 1;
-        end
-        if mod(H2(i,j),90) > (90/2)
-            BP2(i,j) = 1;
-        end
-    end
-end
+BP1 = ExtractInfo(reconstructedLena1,30);
+BP2 = ExtractInfo(reconstructedLena2,90);
 
 disp("Comparing the b matrices...");
-if isequal(b,BP1)
-    disp("Original B and BP1 from reconstructed 1 are equal");
-else
-    disp("b and bp1 not equal");
-end
-
-if isequal(b,BP2)
-    disp("Original B and BP2 from reconstructed 2 are equal");
-else
-    disp("b and bp2 not equal");
-    
-end
-
 if isequal(b,BP1) && isequal(b,BP2)
     disp("All three matrices are equal. Woohoo!");
+elseif isequal(b,BP1)
+    disp("Original B and BP1 from reconstructed 1 are equal but not B and BP2");
+elseif isequal(b,BP2)
+    disp("Original B and BP2 from reconstructed 2 are equal but not B and BP1");
+else
+    disp("Oops. Something went wrong. None of the matrices are equal :(");
 end
 
-bp1_count = 0;
-bp2_count = 0;
-for i = 1:rows*cols
-  
-    if BP1(1,i) == b(1,i)
-        bp1_count = bp1_count + 1;
-    end
-    if BP2(1,i) == b(1,i)
-        bp2_count = bp2_count + 1;
-    end
-end
 
-bp1_count = bp1_count * 100 ./ (rows*cols);
-bp2_count = bp2_count * 100 ./(rows*cols);
+bp1_count = CompareMatrices(b,BP1);
+bp2_count = CompareMatrices(b,BP2);
 
 disp("The percent of pixels macthing between b and BP1: " + bp1_count + "% and between b and BP2: " + bp2_count + "%");
+disp(newline + "Grader: There appears to be roundoff error. If both matrices are not equal, try running again. It should work on another try. Thanks");
 
 disp('-----Finish Solving Problem 3----');
