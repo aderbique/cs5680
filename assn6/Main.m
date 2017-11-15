@@ -122,7 +122,7 @@ histHorse1 = CalNormalizedHSVHist(Horse1,4,4,4);
 % title("Histogram of Horse1.jpg")
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-% Problem 2.2
+%% Problem 2.2
 
 Elephant1 = imread('Elephant1.jpg');
 Elephant2 = imread('Elephant2.jpg');
@@ -138,25 +138,26 @@ E2 = CalNormalizedHSVHist(Elephant2,4,4,4);
 figure;
 subplot(2,2,1);
 bar(H1);
-axis([0,64 0 35000])
+axis([0,64 0 0.4])
 title("Horse 1");
 
 subplot(2,2,2);
 bar(H2);
-axis([0,64 0 35000])
+axis([0,64 0 0.4])
 title("Horse 2");
 
 subplot(2,2,3);
 bar(E1);
-axis([0,64 0 35000])
+axis([0,64 0 0.4])
 title("Elephant 1");
 
 subplot(2,2,4);
 bar(E2);
-axis([0,64 0 35000])
+axis([0,64 0 0.4])
 title("Elephant 2");
 
-ImageDB = [Horse1,Horse2,Elephant1,Elephant2];
+%ImageDB = [Horse1,Horse2,Elephant1,Elephant2];
+ImageDB = {'Horse1','Horse2','Elephant1','Elephant2';Horse1,Horse2,Elephant1,Elephant2;H1,H2,E1,E2;0,0,0,0};
 %%%%%%%%
 %Query 1
 
@@ -179,18 +180,16 @@ disp('-----Finish Solving Problem 2----');
 disp('Press any key to continue');
 pause; 
 disp("----------- Problem 3 A Simple Watermarking Technique in Wavelet Domain -----------");
-% Problem 3.1
+%% Problem 3.1
 
 Lena = imread('Lena.jpg');
-[rows,cols] = size(Lena);
-L = wmaxlev([rows cols],'db9');
-X = floor(L/2);
 
-decompLena = wavedec3(Lena,X,'db9');
+[decompLena, S] = wavedec2(Lena,3,'db9');
 [rows,cols] = size(decompLena);
 s = rng(1,'twister');
 b = randi(0:1,rows,cols);
 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3.2
 
