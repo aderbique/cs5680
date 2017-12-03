@@ -2,14 +2,35 @@
 %A01967241
 %Final Project
 
-Im = imread('image1.png'); %Reads in image
+%read in images
+% Im01 = imadjust(rgb2gray(imread('im01.JPG')));
+% Im02 = imadjust(rgb2gray(imread('im02.JPG')));
+% Im03 = imadjust(rgb2gray(imread('im03.JPG')));
+% Im04 = imadjust(rgb2gray(imread('im04.JPG')));
+% Im05 = imadjust(rgb2gray(imread('im05.JPG')));
+% Im06 = imadjust(rgb2gray(imread('im06.JPG')));
+% Im07 = imadjust(rgb2gray(imread('im07.JPG')));
+% Im08 = imadjust(rgb2gray(imread('im08.JPG')));
+ImDB = {8};
+CrackDB = {8};
+for i = 1:8
+    im = "im0" + int2str(i) + ".JPG";
+    disp(im);
+    ImDB{i}= imread(im);
+    shadowRemove = RemoveShadow(ImDB{i});
+    CrackMap = GenerateCrackMap(shadowRemove);
+    MSP = ConstructMSP(CrackMap);
+   CrackDB{i} = MSP;
+end
 
-Im  = rgb2gray(Im); %Grayscales image
+figure;
+imshow(ImDB{4});
 
-Im = imadjust(Im); %Scales image
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 1 Shadow Removal
+
 
 
 % 1: procedure GEOLEVEL
