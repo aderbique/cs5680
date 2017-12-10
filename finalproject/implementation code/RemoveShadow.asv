@@ -8,7 +8,6 @@ function [outputIm] = RemoveShadow(Im,shadowMask)
     shadowCount = 0;
     backgroundSum = 0;
     backgroundCount = 0;
-    
     B = [];
     S = [];
     for i=1:rows
@@ -16,11 +15,10 @@ function [outputIm] = RemoveShadow(Im,shadowMask)
            if shadowMask(i,j) == 1
                shadowSum = shadowSum + uint32(Im(i,j));
                shadowCount = shadowCount + 1;
-               S(shadowCount) = Im(i,j);
+               S(shadowCount)
            else
                backgroundSum = backgroundSum + uint32(Im(i,j));
                backgroundCount = backgroundCount + 1;
-               B(backgroundCount) = Im(i,j);
            end
         end
     end
@@ -29,11 +27,9 @@ function [outputIm] = RemoveShadow(Im,shadowMask)
     disp("The average intensity of the shadow region is: " + avgShadow);
     disp("The average intensity of the background region is: " + avgBG);
     
+    diff = avgBG - avgShadow;
+    
     alpha = std(B)/ std(S);
-    disp(alpha);
-    
-    diff = avgBG - (alpha * avgShadow);
-    
     
       for i=1:rows
         for j = 1:cols

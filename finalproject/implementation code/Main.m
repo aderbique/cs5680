@@ -3,6 +3,24 @@
 %Final Project
 
 %read in images
+%Im = imread('im08.JPG');
+%Im = imread('paperIm.jpg');
+Im = imread('shadowIm.JPG');
+shadowMask = FindShadow(Im);
+grayIm = rgb2gray(Im);
+enhancedGrayIm = imadjust(grayIm);
+noShadowIm = RemoveShadow(enhancedGrayIm,shadowMask);
+
+figure;
+subplot(1,2,1);
+imshow(grayIm);
+
+subplot(1,2,2);
+imshow(noShadowIm);
+
+CrackMap = FindCrackPixels(noShadowIm);
+
+
 % Im01 = imadjust(rgb2gray(imread('im01.JPG')));
 % Im02 = imadjust(rgb2gray(imread('im02.JPG')));
 % Im03 = imadjust(rgb2gray(imread('im03.JPG')));
@@ -11,22 +29,22 @@
 % Im06 = imadjust(rgb2gray(imread('im06.JPG')));
 % Im07 = imadjust(rgb2gray(imread('im07.JPG')));
 % Im08 = imadjust(rgb2gray(imread('im08.JPG')));
-ImDB = {8};
-CrackDB = {8};
-for i = 1:8
-    im = "im0" + int2str(i) + ".JPG";
-    disp(im);
-    ImDB{i}= imread(im);
-    shadowRemove = RemoveShadow(ImDB{i});
-    CrackMap = GenerateCrackMap(shadowRemove);
-    MSP = ConstructMSP(CrackMap);
-   CrackDB{i} = MSP;
-end
-
-figure;
-imshow(ImDB{4});
-
-
+% ImDB = {8};
+% CrackDB = {8};
+% for i = 1:8
+%     im = "im0" + int2str(i) + ".JPG";
+%     disp(im);
+%     ImDB{i}= imread(im);
+%     shadowRemove = RemoveShadow(ImDB{i});
+%     CrackMap = GenerateCrackMap(shadowRemove);
+%     MSP = ConstructMSP(CrackMap);
+%    CrackDB{i} = MSP;
+% end
+% 
+% figure;
+% imshow(ImDB{4});
+% 
+% 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 1 Shadow Removal
