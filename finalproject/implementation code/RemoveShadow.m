@@ -11,6 +11,7 @@ function [outputIm] = RemoveShadow(Im,shadowMask)
     
     B = [];
     S = [];
+    %Determining average of background B and shadow area S
     for i=1:rows
         for j = 1:cols
            if shadowMask(i,j) == 1
@@ -29,12 +30,13 @@ function [outputIm] = RemoveShadow(Im,shadowMask)
     disp("The average intensity of the shadow region is: " + avgShadow);
     disp("The average intensity of the background region is: " + avgBG);
     
+    %This alpha value is specified in the paper
     alpha = std(B)/ std(S);
     disp(alpha);
     
     diff = avgBG - (alpha * avgShadow);
     
-    
+    %Performing adjustment operations to lighten the shadow areas
       for i=1:rows
         for j = 1:cols
            if shadowMask(i,j) == 1

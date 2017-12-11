@@ -3,93 +3,86 @@
 %Final Project
 
 %read in images
-%Im = imread('im08.JPG');
-%Im = imread('paperIm.jpg');
-Im = imread('shadowIm.JPG');
+Im = imread('shadow2.png');
+
+%Calculate the shadow mask
 shadowMask = FindShadow(Im);
+
+%Grayscale the image
 grayIm = rgb2gray(Im);
+
+%Scaling grayscale image to [0:255]
 enhancedGrayIm = imadjust(grayIm);
+
+%Removing Shadow from Image
 noShadowIm = RemoveShadow(enhancedGrayIm,shadowMask);
 
+%Performing Gaussian Smoothing operation on shadow removed image
+noShadowIm = imgaussfilt(noShadowIm,2);
+
+noShadowIm = medfilt2(noShadowIm);
+
+%Generating the crack seed map from noshadowed image
+CrackMap = GenerateCrackMap(noShadowIm);
+
+%Create stick tensorfield from Crack Map
+sigma = 9;
+T = find_features(CrackMap,sigma);
+
+%Perform tensor voting operations
+    [e1,e2,l1,l2] = convert_tensor_ev(T);
+    z = l1-l2;
+    l1(z<0.3) = 0;
+    l2(z<0.3) = 0;
+    T = convert_tensor_ev(e1,e2,l1,l2);
+
+
+% Curve extraction from tensor field
+re = calc_ortho_extreme(T,15,pi/32);
+
 figure;
-subplot(1,2,1);
+subplot(2,2,1);
+imshow(Im);
+title('Original Image');
+
+subplot(2,2,2);
 imshow(grayIm);
+title('GrayScaled Image');
 
-subplot(1,2,2);
+subplot(2,2,3);
+imshow(enhancedGrayIm);
+title('Enhanced Im');
+
+subplot(2,2,4);
 imshow(noShadowIm);
-
-CrackMap = FindCrackPixels(noShadowIm);
-
-
-% Im01 = imadjust(rgb2gray(imread('im01.JPG')));
-% Im02 = imadjust(rgb2gray(imread('im02.JPG')));
-% Im03 = imadjust(rgb2gray(imread('im03.JPG')));
-% Im04 = imadjust(rgb2gray(imread('im04.JPG')));
-% Im05 = imadjust(rgb2gray(imread('im05.JPG')));
-% Im06 = imadjust(rgb2gray(imread('im06.JPG')));
-% Im07 = imadjust(rgb2gray(imread('im07.JPG')));
-% Im08 = imadjust(rgb2gray(imread('im08.JPG')));
-% ImDB = {8};
-% CrackDB = {8};
-% for i = 1:8
-%     im = "im0" + int2str(i) + ".JPG";
-%     disp(im);
-%     ImDB{i}= imread(im);
-%     shadowRemove = RemoveShadow(ImDB{i});
-%     CrackMap = GenerateCrackMap(shadowRemove);
-%     MSP = ConstructMSP(CrackMap);
-%    CrackDB{i} = MSP;
-% end
-% 
-% figure;
-% imshow(ImDB{4});
-% 
-% 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Step 1 Shadow Removal
+title('Removed Shadow');
 
 
+%Image Overlay
+[rows,cols] = size(grayIm);
+for i=1:rows
+    for j=1:cols
+        if re(i,j) == 1
+            Im(i, j, 1) = 255;
+            Im(i, j, 2) = 255;
+            Im(i, j, 3) = 0;
+        end
+    end
+end
 
-% 1: procedure GEOLEVEL
-% 2: input: imgs: a smoothed image from Step 2 with
-% intensity in range [0,255]
-% 3: N: the number of geodesic levels
-% 4: output: {Giji = 1,2,...,N}: geodesic levels
-% 5: // ng: the number of pixels in one geodesic level
-% 6: ng ¼ Widthðimgs ÞHeightðimgs Þ
-% N ;
-% 7: i = 1, sum = 0;
-% 8: for k 0 to 255 do
-% 9: Pk Get all the pixels with intensity k;
-% 10: Gi Add Pk to Gi;
-% 11: sum = sum + number of pixels in Pk;
-% 12: if sum P ng then i = i + 1, sum = 0;
-% 13: end if
-% 14: end for
-% 15: N = i;
-% 16: end procedure
+figure;
+subplot(2,2,1)
+imshow(CrackMap);
+title('Crack Seed Map');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Step 2 Local Intensity Difference Analysis
+subplot(2,2,2)
+imshow(l1);
+title('Tensor Voting');
 
-% 1: procedure EDGEPRUNING
-% 2: input: T: an MST
-% 3: Lp: path-length threshold
-% 4: output: R: final crack curves
-% 5: // get all leaf nodes from V
-% 6: Vleaf GetLeafnodes(V);
-% 7: // search a longest path Pmax between tree leaves
-% 8: Wmax 0;
-% 9: for each vi 2 Vleaf do
-% 10: P LongestPathFrom(vi);
-% 11: W PathLengthOf(P);
-% 12: if W > Wmax then Wmax W, Pmax P;
-% 13: end if
-% 14: end for
-% 15: if Wmax < Lp then go to Line 20;
-% 17: end if
-% 18: R Add Pmax to R;
-% 19: // recursive pruning
-% 20: T (T Pmax), go to Line 6;
-% 21: end procedure
+subplot(2,2,3)
+imshow(re);
+title('Pruned Crack Field');
+
+subplot(2,2,4)
+imshow(Im);
+title('Crack Im Overlay');
