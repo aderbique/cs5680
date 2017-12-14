@@ -34,11 +34,13 @@ for i = 1:16
     if i <=3
         c_wire = imerode(c_wire, morph_grad);
     end
-    if i <= 6
+    if i <= 7
         b_wire = imerode(b_wire, morph_grad);
     end
     d_wire = imerode(d_wire,morph_grad);
 end
+
+
 
 figure;
 subplot(2,2,1);
@@ -62,6 +64,23 @@ Shapes = imread('Shapes.tif');
 b_shapes = Shapes;
 c_shapes = Shapes;
 d_shapes = Shapes;
+
+%For take home final
+finalIm = bwareafilt(b_wire,16,'smallest');
+
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+finalIm = imdilate(finalIm,morph_grad);
+
+figure;
+imshow(finalIm);
+title("Final Image");
+
+
 
 %Desired Im 1
 for i = 1:10
